@@ -11,3 +11,38 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.container{
+  margin: 0 auto;
+  width: 80%;
+}
+
+.nav{
+  height: 3rem;
+  width: 80%;
+  background: pink;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-container{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.input-container{
+  width: 15rem;
+  background: white;
+  height: 1.8rem;
+  border: 1px solid gray;
+  box-sizing: border-box;
+}
+
+.button-container{
+  height: 1.8rem;
+  width: 4rem;
+}
