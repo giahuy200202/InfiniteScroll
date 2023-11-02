@@ -21,36 +21,39 @@ const App = () => {
     const dataJ = await data.json();
     const result = dataJ.results;
     setIsSearchDone(true);
-    console.log('res: ', res);
-    console.log('result: ', result);
-    page === 1 ? setRes(result) : setRes(current => [...current, ...result]);
+    console.log("res: ", res);
+    console.log("result: ", result);
+    page === 1 ? setRes(result) : setRes((current) => [...current, ...result]);
   };
 
   useEffect(() => {
     fetchRequest(page);
   }, [page]);
 
-  const loadMore = () =>{
-    setPage(prevPage => prevPage + 1)
-  }
+  const loadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
   console.log(page);
 
-  let num = 1;  
+  let num = 1;
 
   const intersectionObserver = useRef();
 
-  const lastRef = useCallback((element)=>{
-    if (!isSearchDone) return;
-    if (intersectionObserver.current) intersectionObserver.current.disconnect();
-    intersectionObserver.current = new IntersectionObserver((el) => {
-      if (el[0].isIntersecting) {
-        loadMore();
-      }
-    });
-    if (element) intersectionObserver.current.observe(element);
-  }, [isSearchDone, loadMore]);
-
+  const lastRef = useCallback(
+    (element) => {
+      if (!isSearchDone) return;
+      if (intersectionObserver.current)
+        intersectionObserver.current.disconnect();
+      intersectionObserver.current = new IntersectionObserver((el) => {
+        if (el[0].isIntersecting) {
+          loadMore();
+        }
+      });
+      if (element) intersectionObserver.current.observe(element);
+    },
+    [isSearchDone, loadMore]
+  );
 
   return (
     <div className="container">
@@ -71,32 +74,36 @@ const App = () => {
           </button>
         </div>
       </div>
-      {isSearchDone ? (
-        <div className="img-containter">
-          {dataSubmit !== "random" ? (
-            <div className="result-title">Results for "{dataSubmit}"</div>
-          ) : (
-            <div></div>
-          )}
-          {res.map((val, index) => {
-            if (index + 1 == res.length) {
-              return <img key={index} ref={lastRef} className="each-img" src={val.urls.small} alt={val.alt_description} />
-            }
+
+      <div className="img-containter">
+        {dataSubmit !== "random" ? (
+          <div className="result-title">Results for "{dataSubmit}"</div>
+        ) : (
+          <div></div>
+        )}
+        {res.map((val, index) => {
+          if (index + 1 == res.length) {
             return (
               <img
                 key={index}
+                ref={lastRef}
                 className="each-img"
                 src={val.urls.small}
-                alt="val.alt_description"
+                alt={val.alt_description}
               />
             );
-          })}
-          <div className="spinner"></div>
-        </div>
-        
-      ) : (
-        <div className="spinner"></div>
-      )}
+          }
+          return (
+            <img
+              key={index}
+              className="each-img"
+              src={val.urls.small}
+              alt="val.alt_description"
+            />
+          );
+        })}
+      </div>
+      {!isSearchDone && <div className="spinner"></div>}
     </div>
   );
 };
